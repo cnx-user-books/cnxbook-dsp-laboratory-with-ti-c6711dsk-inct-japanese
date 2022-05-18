@@ -1,0 +1,59 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Assignments and considerations - C6711DSK (INCT)</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>f71783aa-9c96-49be-9a04-baab7deaa619</md:uuid>
+</metadata>
+  <content>
+<section id="Kadai_Kousatsu">
+<title>課 題</title> 
+<para id="element-693"> 
+　前節までの課題および本節での課題を以下の点に留意して実行し、結果とその考察を整理して報告せよ。</para>
+<list list-type="bulleted" id="element-287">
+<item>プログラムの処理の概略、設計の方針を示すこと。</item>
+<item>ソースコード（コメントを入れること）を示すこと。</item>
+<item>実行結果・処理性能（所要サイクル数など）を示すこと。</item>
+<item>結果に対する考察、気づいたこと、問題点、提案などを記述すること。
+</item>
+<item>参考書などのプログラムを元にして作成してもよい。ただし、出典を明らかにし、自分が工夫した点を明記すること。他の学生のプログラムをそのまま参照することは認めない。</item></list><para id="element-911"><title>課題1</title> 
+
+　実時間処理が可能なIIRフィルタを実装し、動作確認を行え。また、振幅特性の測定など特性の確認も行うこと。</para><para id="element-100"><title>課題２</title> 
+
+　前節で示したFIRフィルタの実装を改善せよ。以下の手法などが考えられる。</para>
+<list list-type="bulleted" id="element-952">
+<item><code>forループ</code> が二つに分かれているのを１つのループにまとめる(最適化レベルが低い場合には効果があるが、最適化レベルが高い場合には逆効果となる場合もあるようだ)。</item>
+<item>転置型構成など、所要サイクル数ができるだけ少なくなるよう工夫せよ。</item>
+<item>固定小数点演算を用いることにより、所要サイクル数を減少せよ。固定小数点演算化するための指針を以下に示す。
+<list id="element-267" list-type="enumerated">
+<item>インパルス応答の値は 32768倍 して16bit整数で表現できる値にする(小数点以下四捨五入または切り捨て)。</item>
+<item>インパルス応答を格納する配列とタップ信号配列および<code>FirFil( )</code>関数の戻り値の型は16bit整数にする。（A/D変換器が16bitなので、入力される信号の値は16bitで表現可能。フィルタの振幅の最大値が0[dB]=ゲイン１倍以下なら、最終的演算結果も16bitで表現可能。また、ボードに搭載されているD/A変換器は16bitだから、<code>short</code>型の値を渡す必要がある。）</item>
+<item>16bitデータ同士の積和演算結果を格納する変数 yn は32bit整数型とする。（16bitデータ同士の演算結果は32bitになる場合がある。ただし、2.の条件が満足されれば、フィルタの最終出力は16bitで表現可能な範囲に必ず収まる。）</item>
+<item>フィルタ処理後の出力を<code>FirFil( )</code>関数の戻り値として返す際は、<code>return yn&gt;&gt;15;</code> のようにビットシフト演算により値を1／32768 倍にして返す。</item>
+</list> 
+</item>
+</list>
+<para id="element-459">なお、作成したプログラムの内容に応じ、振幅特性の測定など必要な特性の確認も行うこと(課題のプログラムを報告するにあたって、何を測定する必要があるのかは自分で考える。例えば、整数化により係数値の丸めを行っているので、フィルタの振幅特性の理論値もわずかに変化する可能性がある)。</para><para id="element-920"><title>課題3</title> 
+
+　オリジナルなプログラムを作成せよ。</para><list list-type="bulleted" id="element-255"><item>入力信号にエコーを付加する。</item>
+<item>入力信号にAM変調(Amplitude Moduration)を行った変調波を出力する。</item>
+<item>その変調波を復調して元の信号に戻す。</item>
+<item>ある周波数の正弦波信号を出力する。</item>
+<item>入力信号にフランジャーなどのエフェクト処理をする。</item></list><para id="delete_me">
+       <!-- Insert module text here -->
+
+</para>
+</section>
+
+<section id="Kousatsu">
+  <title>考 察</title> 
+  <list list-type="enumerated" id="element-434"><item>使用したDSPは、VLIW型のアーキテクチャを有する演算プロセッサである。VLIW型のマイクロプロセッサとは、どのようなプロセッサか。また、どのような特徴を有するか。</item>
+<item>パイプライン処理とはどのようなことか。説明せよ。</item>
+</list>
+</section>
+
+<section id="Tsuika_kadai">
+  <title>自由課題</title> 
+  <list list-type="enumerated" id="element-519"><item>DSPを製造しているメーカを調査し、それぞれのメーカの最高性能のDSP（固定小数点および浮動小数点）の演算性能を比較せよ。また、その性能の根拠を調べよ（多くの場合、クロック周波数と演算ユニット数または同時実行可能命令から計算できる理想的な場合のピーク性能値が表記されている）。</item>
+</list>
+</section>
+   
+</content>
+</document>

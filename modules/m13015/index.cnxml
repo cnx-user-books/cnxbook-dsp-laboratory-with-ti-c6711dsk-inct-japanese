@@ -1,0 +1,159 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Sample program and assignments - C6711DSK(INCT)</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>43fd8342-b0ad-4210-9610-442cd8c688c4</md:uuid>
+</metadata>
+<content>
+<para id="para400">
+　サンプルプログラムがユーザ <code>i00200</code> のホームディレクトリの <code>c6711dsk</code> ディレクトリ以下に置いてある。各プログラムは、プロジェクト(コンパイル単位)ごとに別ディレクトリに分かれており、複数のファイルから構成されているので、ファイルサーバにログインして以下のコマンド例によりディレクトリごとコピーしておく。
+<code display="block" id="idm638880">	cp  -r   ~i00200/c6711dsk   ~/</code>
+上記の例では、<code>N:\c6711dsk</code> 以下にコピーされる。最初は、サンプルプログラムに手を加えずに実行し、動作確認を行う。<emphasis>まずDSPボードをパソコンに正しく接続し、電源も入れておくこと。</emphasis>
+
+</para>
+
+<section id="through">
+  <title>スルー入出力プログラム</title> 
+  <para id="para410">
+　DSPボードを動作させるプログラムとして、最もシンプルなプログラムである[3]。入力信号をサンプリング(A/D変換)し、何も処理をしないでそのまま出力する(D/A変換)プログラムである。DSPボードの入力端子に発振器からの信号を加えてプログラムを動作させれば、出力端子に入力信号がそのまま出力される。A/D・D/A変換に伴う処理遅延があるので、出力信号は入力より遅れて出力される(入出力間に位相差がある)。 </para><para id="element-115">
+　このサンプルプログラムをコンパイル・リンク・ロード・実行する手順を以下に示す。</para><para id="element-597"><title>(1)ファイル構成の確認</title> 
+
+　このサンプルプログラムは、以下のファイル群<code>(N:\c6711dsk\through)</code>から構成されている。多くの初期設定ファイルが含まれているが、与えられた環境で信号処理アルゴリズムのみをプログラミングする開発者は、<code>main( )</code>関数が含まれている<code>through.c</code>のみを編集すればよく、他のファイルの設定は必要がない限り変更しなくてよい。<code>through.c</code>には非常にシンプルなコードしか記述されていない。
+<list list-type="labeled-item" id="element-308">
+<item><label>c6xdsk.h, c6xinterrupts.h</label>
+DSKおよびDSPチップ関連のヘッダファイル(TI社)</item>
+<item><label>c6xdskinit.c, c6xdskinit.h </label>
+DSKのA/D・D/A変換器や通信ポートの初期化用コード</item>
+<item><label>through.c</label>
+main( )関数が含まれたソースコード、利用者はこれを編集</item>
+<item><label>C6xdsk.cmd</label>
+DSKのメモリ構成の指定／Cコンパイラが生成するセクションをどの
+メモリ領域に置くかなどの指定がなされている設定ファイル(CCS環境での固有のファイル)
+</item>
+<item><label>vectors_11.asm</label>
+リセットや割り込みに対応した処理を書いたアセンブリコード</item>
+<item><label>through.pjt</label>
+以上のファイル群をコンパイル・リンクする設定を記憶しているプロジェクトファイル。テキストファイルではあるが、このファイルを直接編集してはいけない。
+</item>
+
+</list>
+</para><para id="element-330"><title>(2)開発環境(CCS)の起動</title> 
+
+　念のため、DSKの電源を入れなおしボードをリセットする。初期テストプログラムが自動的に実行される(約15秒程度かかる)。
+デスクトップの「I科」フォルダの中にある<link target-id="element-224"/>のアイコンをダブルクリックして開発環境を起動する。
+<figure id="element-224">
+  <media id="idm719232" alt=""><image src="../../media/ccsicon.bmp" mime-type="image/bmp"/></media>
+  <caption>CCSを起動するためのアイコン</caption>
+</figure></para><para id="element-21"><title>(3)プロジェクトファイルのロード</title> 
+
+<code>Project - Open</code>をクリックし、<code>through.pjt</code> を開く。</para><para id="element-825"><title>(4)コンパイル・リンク</title> 
+
+<code>Project - Rebuild All</code>を選択し、プログラムをコンパイル・リンクする。<link target-id="element-628"/>のように表示されれば、エラーなしで終了したことになる。
+<figure id="element-628">
+  <media id="idp5847632" alt=""><image src="../../media/linking.bmp" mime-type="image/bmp"/></media>
+  <caption>コンパイル・リンクの正常終了表示</caption>
+</figure></para><para id="element-218"><title>(5)プログラムのロード</title> 
+
+<code>File - Load Program</code> で <code>through.out</code>をDSPボードにロードする。</para><para id="element-927"><title>(6)実行</title> 
+
+<code>Debug - Run</code>でプログラムを実行する。DSPボードの入力に発振器を接続し、1[kHz] 0.5[V]程度の正弦波信号を入力すれば、出力信号をオシロスコープで観測できる。</para><note id="idm856736"> このDSPボードの出力には、1[V]程度の大きな直流オフセット電圧がある（ボード上のコンデンサの極性間違い）。オシロスコープはAC結合としたほうがよい。なお、この直流オフセットは出力端子と並列に10[kΩ]程度の抵抗を接続すると100[mV]オーダの値まで小さくなる。</note><para id="element-173"><title>(7)終了</title> 
+
+<code>Debug - Halt</code>でDSPでのプログラム実行を停止できる。プログラム停止状態で<code>Project - Close</code>を選択すれば、プロジェクトファイルを閉じることができる（必要に応じプロジェクトを保存しておくこと）。この状態になれば、開発環境CCSを終了してもよい。
+
+</para>
+</section>
+
+<section id="throughkadai">
+  <title>スループログラムでの課題</title> 
+  <list list-type="enumerated" id="element-981"><item>スループログラム動作時の振幅特性を測定し、グラフにまとめよ。(横軸：周波数、縦軸：[dB])</item>
+<item>周波数1[kHz]における無歪最大出力電圧を測定せよ。</item>
+<item><code>through.c</code>を変更し、入力電圧が約0.5倍されて出力されるようにせよ。また、動作確認を行うこと。</item></list><para id="para420">
+　<link target-id="element-742"/>に課題実行時の開発環境画面例を示す。<code>through.c</code> の中の <code>c_int11( )</code>関数を変更すれば、上記 3.を実現できる。<code>c_int11( )</code>は１サンプリング周期に１回割り込み処理として実行される関数である。
+  </para><figure id="element-742"><media id="idm298320" alt=""><image src="../../media/ccsscreen.jpg" mime-type="image/jpeg"/></media>
+<caption>開発環境の実行例</caption></figure><para id="element-883"> 
+<code>c_int11( )</code>関数の内部では、<code>input_sample( )</code>関数の戻り値を代入している変数 <code>sample_data</code> に16bitのデータとしてA/D変換されたサンプル値が格納されている。元のサンプルプログラムでは、<code>sample_data</code> に格納されたデータをそのまま <code>output_sampe( )</code> 関数に渡すことでスルー入出力処理を実現している。したがって、<code>sample_data</code> の値を0.5倍してから <code>output_sample( )</code>に渡すように変更すれば、上記の3.を実現できる。ただし、データの型変換やキャストを厳密に明示してコードを書かないと、意図した通りにプログラムが動作しない場合がある。</para><list list-type="bulleted" id="element-525"><item><code>short</code> に 0.5 を乗ずると、実数型データになる。</item>
+<item>実数型になったデータは、明示的にキャストして <code>short</code> に変換すること。</item>
+<item><code>short</code>型データを2分の1倍にするには、0.5を乗ずるのではなくビットシフトするという方法も考えられる。こちらのほうが効率はよい。</item>
+<item>プログラムを修正した場合、コンパイル・リンク・ロードを再度行う必要がある。</item></list>
+</section>
+
+<section id="FirFilterProg">
+  <title>FIRフィルタプログラム</title> 
+  <para id="para430">
+　サンプルコードは、<code>N:\c6711\fir_float</code> にコピーされている。このプログラムは、32bit浮動小数点演算によりFIR(Finite Impulse Response)フィルタ処理を行うサンプルプログラムである。
+以下の手順を参考に、さきほどと同じくこのプログラムを実行せよ。
+
+  </para><list list-type="enumerated" id="element-633"><item>プロジェクトファイル <code>Fir.pjt</code> を開く</item>
+<item><code>Project - Build Options</code> を選択する。<link target-id="element-490"/>に示すように、<code>Opt. Level</code>(最適化レベル)が<code>Register(-o0)</code> になっていることを確認しておく。<code>(-o0)</code>は、コンパイル時にレベル0の最適化を行うことを意味している。</item>
+<item>プログラムをコンパイル・リンクし、<code>Fir.out</code> をDSPボードにロードして実行する。このプログラムはフィルタ長101のFIRフィルタの実装であり、約400～800[Hz]の周波数範囲の信号のみを通過させるBPF(Bnad Pass Filter)の特性を有している。オシロスコープなどで動作確認をしておく。</item></list><figure id="element-490"><media id="idp6459040" alt=""><image src="../../media/LinkerSetting.bmp" mime-type="image/bmp"/></media>
+<caption>コンパイラ・リンカの設定画面</caption></figure>
+</section>
+
+<section id="FirCycles">
+  <title>FIRフィルタプログラムでの所要サイクル数の測定</title> 
+  <para id="para440">
+　DSPプログラムでは、演算処理に必要なサイクル数(クロック数)が重要である。所要サイクル数が少なければ、より複雑な処理を実装してシステム全体の性能上昇を図ったり、より省電力な動作モードを選択したりする余地が生まれてくることになるからである。FirFil( )関数の所要サイクル数の測定(プロファイリング)を行う手順を以下に示す。
+
+  </para><list list-type="enumerated" id="element-284"><item><code>Debug - Reset CPU</code>、<code>File - Reload program</code> を選択する。</item>
+<item><code>Profiler - Start New Session</code> を選択する。<link target-id="element-382"/>に示すように、プロファイルセッション名に <code>FirFil</code> と入力しOKを押す。</item>
+<item><code>fir.c</code> のエディタ画面を前面に表示して、<code>FirFil( )</code> の開始行にカーソルを置いておく(重要)。</item>
+<item><link target-id="element-420"/>に示すアイコン <code>Create Profile Area</code> (上から4つめ)をクリック。<link target-id="element-176"/>に示した<code>Add Profile Area</code> に記入し、<code>FirFil( )</code> 関数を所要サイクル数の測定(プロファイリング)の対象と指定する。</item>
+<item><code>Debug - Run</code> によりプログラムを実行せよ。<link target-id="element-589"/>のようにサイクル数測定結果が刻々と表示される。適当なところで<code>Debug - Halt</code> によりプログラムを停止せよ。</item></list><figure id="element-382"><media id="idm1372160" alt=""><image src="../../media/ProfileSessionName.bmp" mime-type="image/bmp"/></media>
+<caption>プロファイルセッション名の入力画面</caption></figure><figure id="element-420"><media id="idp8934304" alt=""><image src="../../media/CreateProfileArea.bmp" mime-type="image/bmp"/></media>
+<caption><code>Create Profile Area</code> アイコンのクリック</caption></figure>
+</section>
+
+<figure id="element-176"><media id="idp25456" alt=""><image src="../../media/AddProfileArea.bmp" mime-type="image/bmp"/></media>
+<caption>所要サイクル数を測定する範囲の指定(<code>fir.c</code> の6行から18行までの範囲の関数の実行時間を測定する指定になっている）</caption></figure><figure id="element-589"><media id="idp8141392" alt=""><image src="../../media/NumberOfCycles.bmp" mime-type="image/bmp"/></media>
+<caption>所要サイクル数の測定結果</caption></figure><para id="element-117">　<link target-id="element-589"/>の結果は、<code>FirFil( )</code> 関数のコードサイズが160バイトであることや、10回の測定において所要サイクル数の最大値および最小値がそれぞれ4276サイクルおよび4176サイクルであること、平均所要サイクル数が4186サイクルであることを示している。最大値と最小値が異なるのは、キャッシュメモリの効果であると考えられる。１回目の実行では実行コードがキャッシュに書き込まれていないためキャッシュ・ミスを生じ所要サイクル数が多くなり、２回目以降はキャッシュにヒットするので実行時間が短くなる[4]。このプログラム例では、２回目以降の実行サイクル数は4176サイクルとなる。</para><para id="element-739">　以上の結果から、FIRフィルタ処理に要した処理時間を求めておく。DSPコアのクロック周波数150[MHz]より、101タップFIRフィルタ処理に要した処理時間は次式となる。</para>
+
+<equation id="element-870"> 
+<m:math> 
+<m:mrow>
+<m:apply>
+ <m:mfrac>
+  <m:mn>4726</m:mn>
+   <m:mrow>
+    <m:apply>
+     <m:times/>
+      <m:mn>150</m:mn>
+      <m:mo>×</m:mo>
+      <m:msup>
+       <m:mn>10</m:mn>
+       <m:mn>6</m:mn>
+      </m:msup>
+     </m:apply>
+   </m:mrow>
+ </m:mfrac>
+</m:apply>
+<m:mo>=</m:mo>
+ <m:mrow>
+  <m:apply>
+    <m:times/>
+    <m:mn>28.5</m:mn>
+    <m:mo>×</m:mo>
+    <m:msup>
+     <m:mn>10</m:mn>
+     <m:mn>-6</m:mn>
+    </m:msup>
+  </m:apply>
+ </m:mrow>
+ <m:mrow>
+  <m:mo>=</m:mo>
+  <m:mn>28.5</m:mn>
+  <m:mo>[μs]</m:mo>
+ </m:mrow>
+</m:mrow>
+</m:math>
+</equation>
+<para id="element-391">1サンプリング周期125[μs]( =8[kHz]の逆数) よりも処理時間が短いので、リアルタイム処理が充分に可能であることがわかる（後の課題で実行するように、最適化レベルの変更やプログラムの改善により、<code>FirFil( )</code>の所要サイクル数は上記の1/10～1/20倍程度にまで低減できる）。</para><para id="element-888">　所要サイクル数の測定中（プロファイリング作業中）には、原則としてDSPでの実時間処理ができない。サイクル数測定が終了したら、図９に示すように右クリックしてコンテキストメニューを表示し、<code>Close</code>をクリックしてプロファイル画面を閉じておく。<code>Debug - Reset CPU</code>、<code>File - Reload program</code> によりサイクル数測定前の状態に復帰する。</para><figure id="element-439"><media id="idp5386096" alt=""><image src="../../media/CloseProfiling.bmp" mime-type="image/bmp"/></media>
+<caption>プロファイル画面の終了</caption></figure><note id="idp7084448">サイクル数を測定後、DSPボードが制御できなくなることがある（CCS上で<code>Debug-Run</code> を選択すると<code>CPU RUNNING</code> と表示されるが、実際にはDSPでプログラムが実行されていないなどの挙動を示す）。CCSをいったん終了し、ボードの電源を入れ直すと回復する。</note><section id="FirKadai">
+  <title>FIRフィルタのサンプルプログラムでの課題</title> 
+  <para id="para450"><title>(1)フィルタの振幅特性の計算と測定</title>
+　プログラムで<code>#include</code>しているフィルタ係数ファイル<code>bpf101.txt</code> のインパルス応答値を用いてフィルタの振幅特性を計算し、グラフ化せよ(以前のディジタルフィルタの実験で作成したプログラムが使用できる。この計算はDSPではなく通常のコンパイラで行う）。また、DSPボードで実現したディジタルフィルタの振幅特性[dB]を測定し、同じグラフにプロットせよ。
+  </para><para id="element-458"><title>(2)最適化レベルと所要サイクル数の変化の測定</title> 
+　コンパイル時の最適化レベルを <code>(-o2)</code> および <code>(-o3)</code> としたときのコードサイズおよび所要サイクル数を測定せよ（このDSPはVLIW型のアーキテクチャを有し演算器を複数個内蔵しているため、コンパイル時の最適化の効果が非常に大きいことを確認できる）。</para><para id="element-80"><title>(3)リアルタイム処理可能な最大フィルタ長の確認</title> 
+　FIRフィルタをディジタルフィルタ設計プログラム集DF-Design[5]などで設計し、リアルタイム処理が可能な最大フィルタ長の確認を行え。また、所要サイクル数が大きすぎてリアルタイム処理が維持できない状態での出力信号波形を観測・記録せよ。</para>
+</section>
+
+
+</content>
+</document>

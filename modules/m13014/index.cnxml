@@ -1,0 +1,58 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Overview of the C6711DSK - (INCT)</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>8c2179cf-77c3-46ed-bfe1-1a8dc1a323ca</md:uuid>
+</metadata>
+
+<content>
+<section id="enb">
+<title>DSPと組み込みプログラミング</title> 
+<para id="para1">　ディジタルシグナルプロセッサ(DSP)は、信号処理演算に特化したマイクロプロセッサの一種である。信号処理アルゴリズムの実現においては高速なリアルタイム処理が必要な場合が多いため、一般的な機器組み込み用のマイコンでは性能が不足し、かと言ってPentiumのような汎用プロセッサで実現すると価格対性能比が悪い・消費電力が大きいため電池動作を前提とする携帯機器には適さないなどの問題がある。</para><para id="element-553">　そのため、積和演算など信号処理特有の演算を高速に実行可能なマイクロプロセッサとしてDSPが利用されている。現在のDSPは、低消費電力で非常に安価なタイプ(固定小数点型が多い）と、新しい信号処理アルゴリズムをいち早く実装するのに向いた高性能タイプ（浮動小数点型が多い）とに二極分化しており、ディジタル機器を実装する際に欠かせないキーデバイスとなっている。今回の実験では、後者のタイプのDSPを扱う。</para><para id="element-88"> 　DSPに実装するプログラムは、組み込みプログラムと呼ばれ、次のような特徴がある。
+</para><para id="element-751"><title>(1)機器組み込み用である。</title>
+
+Pentiumに代表されるパソコン用のプロセッサのように、不特定のアプリケーションプログラムを実行する環境としてではなく、特定の電子機器等に組み込まれて、専用の処理をするために使われる。システム全体として省電力・低コストが要求される。</para><para id="element-908"><title>(2)実時間信号処理</title> 
+
+1サンプル周期内に処理を終了するために、プログラムの処理速度が高いことが要求される。
+組み込みプログラミングは、デバイスドライバの開発などと並んで、計算機の動作原理に対する深い理解とプログラミングスキルが要求されるプロフェショナルな分野の一つである。
+</para>
+</section>
+
+<section id="dsk">
+<title>DSK(DSP Starter Kit)の概要</title> 
+<para id="para11">　C6711DSKは、製品開発のためにDSPの評価を行う技術者や、DSPプログラミングについて学びたい人などのためにTI社が販売しているDSPボードおよび開発環境のセットである。このボードの主な仕様を以下に示す。
+<list id="chipspec">
+<item>DSPチップ：TMS320C6711を搭載(DSPコアはクロック周波数150MHzで動作)</item> 
+<item>16bit A/D・D/A変換器(TLC320AD535)搭載(サンプリング周波数Fs=8[kHz]、1入力１出力)</item> 
+<item>16MB SDRAM、128kBフラッシュ・メモリ搭載</item>
+</list>
+
+</para>
+</section>
+
+<section id="dspchip">
+<title>C6711DSPの概要</title> 
+<para id="para21">
+　このボードに搭載されているDSPチップであるC6711のチップ内部の構成を図1に示す。
+</para><figure id="element-831"><media id="idp7053712" alt=""><image src="../../media/C6711internal.bmp" mime-type="image/bmp"/></media>
+<caption>DSPチップTMS320C6711の内部構成(文献[2]より引用)</caption></figure><para id="element-64"> 
+　TMS320C6711は、VLIW(Very Large Instruction Word)型アーキテクチャを有する32bit浮動小数点DSPであり、以下の特徴を有する。</para><list list-type="bulleted" id="element-767"><item>演算ユニットが内部に８個(Aレジスタ側とBレジスタ側に4個ずつ)もあり、最大で同時８命令実行可能である。</item>
+<item>チップ内部に32個(A0～A15およびB0～B15)という多くのレジスタが存在する。</item>
+<item>RISC(Reduce Instruction Set Computer)プロセッサと同じくレジスタアーキテクチャのチップであり、演算はレジスタ上のデータに対してしか行えない（一般的なDSPのように、メモリ上のデータ同士を直接演算するアセンブリコードは書けない）。</item>
+<item>チップ内部に32bitバスが９本、256bitバスが1本存在し、544本ものバス配線がチップ内部を走っている(データおよびアドレスのread / writeを並列的かつ高速に行うことができる構造を有する)。しかし、外部メモリインタフェースとしてはアドレスおよびデータ用32bitバスが１本ずつしかないので、外部メモリへのアクセスは内部メモリよりも格段に遅い(チップ外部に内部バスをそのまま引き出すと、DSPチップのピン数が現実的でなくなる・浮遊容量により消費電力が非常に大きくなる・速度が低下するなどの弊害がある）。</item>
+<item>2レベル・キャッシュメモリを有する。
+ <list id="twolevelcache">
+  <item>4kBの一次データ・キャッシュ(L1D)(2WaySetAssociative)</item>
+  <item>4kBの一次プログラム・キャッシュ(L1P)(DirectMapped)</item>
+  <item>64kBの二次キャッシュ／マップド・メモリ(4バンク)(L2)</item>
+ </list>
+</item>
+<item>プログラム開発は、C/C++、アセンブリ、リニアアセンブリなど多様な方法がある。</item>
+<item>アドレス空間は32bitリニア(4GB)である(int型が32bit)。 </item>
+<item>sin( )などの数学ライブラリは、通常のdouble型(64bit)に加えて sinf( )などのようにfloat型(32bit)でも準備されている(演算速度重視のため)。</item></list>
+</section>
+
+
+
+
+</content>
+  
+</document>

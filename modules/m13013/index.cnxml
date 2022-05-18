@@ -1,0 +1,25 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Equipment - C6711DSK(INCT)</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>c9e9a824-071e-4390-bf6f-d7cdb96c456f</md:uuid>
+</metadata>
+  <content>
+    <para id="delete_me">
+    <!-- Insert module text here -->
+  <list id="link2" list-type="bulleted">
+   <item>DSPボード(TI社 TMS320C6711DSK [1] )および接続ケーブル類のセット　※指示に従い、指定した番号のセットを使用すること。No.1～No.20まで20セットを演習室の棚で保管している（棚上段：No.1～10、下段：No.11～20)</item>
+   <item>Cコンパイラ(TI社 Code Composer Studio、以下CCS)</item>
+   <item>オシロスコープ、発振器、ディジタルテスタ(FLUKE社製)、（スピーカ）、（マイク）</item>
+  </list>
+
+</para><para id="element-276">※注意　DSPボードのセットを持ってきたら、箱の中身を確認せよ。箱の中には、以下の実験用セットが入っている。
+<list id="naiyou" list-type="enumerated">
+<item>DSPボードおよびマニュアル</item>
+<item>DSK版Code Composer Studio CD-ROM(Cコンパイラ)</item>
+<item>5V 電源アダプタ・電源コード</item>
+<item>パラレルケーブル</item>
+<item>ステレオミニプラグケーブル２本、わにぐちクリップつきコード 赤黒各１本</item>
+<item>変換プラグ 2個(赤黒わにぐちクリップコードつき)</item>
+</list></para>   
+  </content>
+  
+</document>

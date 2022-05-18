@@ -1,0 +1,10 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Introduction - C6711DSK(INCT)</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>974584be-d551-478e-90d9-ebd8eff31349</md:uuid>
+</metadata>
+  <content>
+    <para id="delete_me"><!-- Insert module text here -->
+　DSP(Digital Signal Processor)とよばれる実時間(real time)信号処理に適したプロセッサが広く利用されるようになってきている。応用分野としては、携帯端末での画像・音声符号化、ディジタルオーディオ/ビデオ/テレビ/カメラ等のディジタル家電機器、移動体通信の基地局での通信信号処理、ADSL(Asymmetric Digital Subscriber Line)モデム、ハードディスク等のモータコントローラおよび磁気ディスクから読み取った微小信号の復号処理、インターネット電話の信号処理など、多岐にわたっている。</para><para id="element-540">　この実験では、TI(Texas Instruments)社のDSPボードであるC6711DSKを用いてDSP上でリアルタイム処理を実現し、その評価を行うことを目的とする。また、 A/D・D/A変換に伴う遅延の発生や、計算処理がサンプリング周期を上回ったことにより実時間処理ができなくなった場合の出力信号波形の変化など、計算機上のシミュレーションでは経験しにくい現象に触れることにより、実時間処理特有の問題点の把握を目指す。</para>   
+  </content>
+  
+</document>
