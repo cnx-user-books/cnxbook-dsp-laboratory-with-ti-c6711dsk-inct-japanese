@@ -1,12 +1,13 @@
-<col:collection xmlns="http://cnx.rice.edu/collxml" xmlns:col="http://cnx.rice.edu/collxml" xml:lang="ja">
+<?xml version="1.0"?>
+<col:collection xmlns="http://cnx.rice.edu/collxml" xmlns:col="http://cnx.rice.edu/collxml" xml:lang="ja" authors="Yoji Yamada">
   <metadata xmlns:md="http://cnx.rice.edu/mdml" mdml-version="0.5">
     <md:content-id>col10300</md:content-id>
     <md:title>DSP Laboratory with TI C6711DSK (INCT - Japanese)</md:title>
     <md:language>ja</md:language>
     <md:license url="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution License</md:license>
     <md:uuid>c2426999-9d6a-4fda-b1c4-f06887264799</md:uuid>
-<md:slug>dsp-laboratory-with-ti-c6711dsk-inct-japanese</md:slug>
-</metadata>
+    <md:slug>dsp-laboratory-with-ti-c6711dsk-inct-japanese</md:slug>
+  </metadata>
   <col:content>
     <col:module document="m13012"/>
     <col:module document="m13013"/>
